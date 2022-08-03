@@ -1,22 +1,41 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int gappx     = 10;       /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
+static const char *fonts[]          = { "Cascadia Code PL:size=12" };
+static const char dmenufont[]       = "Cascadia Code PL:size=12";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
+
+/* Solarized Dark colors */
+static const char col_sol_base03[]  = "#002b36";
+static const char col_sol_base02[]  = "#073642";
+static const char col_sol_base01[]  = "#586e75";
+static const char col_sol_base00[]  = "#657b83";
+static const char col_sol_base0[]  = "#839496";
+static const char col_sol_base1[]  = "#93a1a1";
+static const char col_sol_base2[]  = "#eee8d5";
+static const char col_sol_base3[]  = "#fdf6e3";
+static const char col_sol_yellow[]  = "#b58900";
+static const char col_sol_orange[]  = "#cb4b16";
+static const char col_sol_red[]     = "#dc322f";
+static const char col_sol_magenta[] = "#d33682";
+static const char col_sol_violet[]  = "#6c71c4";
+static const char col_sol_blue[]    = "#268bd2";
+static const char col_sol_cyan[]    = "#2aa198";
+static const char col_sol_green[]   = "#859900";
+
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeNorm] = { col_sol_base1, col_sol_base03, col_sol_base03 },
+	[SchemeSel]  = { col_sol_base1, col_sol_violet, col_sol_base02 },
 };
 
 /* tagging */
@@ -40,29 +59,32 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+	{ "[tile]",      tile },    /* first entry is default */
+	{ "~float~",      NULL },    /* no layout function means floating behavior */
+	{ "[mono]",      monocle },
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+#define PrtScrDWM	    0x0000ff61
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_sol_base03, "-nf", col_sol_base1, "-sb", col_sol_violet, "-sf", col_sol_base03, NULL };
+static const char *termcmd[]  = { "alacritty", NULL };
+static const char *cmdprintscreen[]  = { "spectacle", "-m", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
+    { 0,                            PrtScrDWM, spawn,          {.v = cmdprintscreen } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
