@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 0;        /* border pixel of windows */
+static const unsigned int borderpx  = 4;        /* border pixel of windows */
 static const unsigned int gappx     = 10;       /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -35,7 +35,7 @@ static const char col_sol_green[]   = "#859900";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_sol_base1, col_sol_base03, col_sol_base03 },
-	[SchemeSel]  = { col_sol_base1, col_sol_violet, col_sol_base02 },
+	[SchemeSel]  = { col_sol_base1, col_sol_violet, col_sol_violet },
 };
 
 /* tagging */
