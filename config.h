@@ -8,8 +8,8 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = 
 { 
-    "Cascadia Code PL:size=12", 
-    "JoyPixels:pixelsize=12:antialias=true:autohint=true" 
+    "Cascadia Mono:size=12",
+    "AppleColorEmoji:size=12:minspace=False"
 };
 static const char dmenufont[]       = "Cascadia Code PL:size=12";
 static const char col_gray1[]       = "#222222";
@@ -84,7 +84,7 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_sol_base03, "-nf", col_sol_base1, "-sb", col_sol_violet, "-sf", col_sol_base03, NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
-static const char *cmdprintscreen[]  = { "spectacle", "-m", NULL };
+static const char *cmdprintscreen[]  = { "flameshot", "launcher", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
