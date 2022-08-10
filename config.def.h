@@ -6,7 +6,11 @@ static const unsigned int gappx     = 10;       /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Cascadia Code PL:size=12" };
+static const char *fonts[]          = 
+{ 
+    "Cascadia Mono:size=12",
+    "AppleColorEmoji:size=12:minspace=False"
+};
 static const char dmenufont[]       = "Cascadia Code PL:size=12";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
@@ -35,7 +39,7 @@ static const char col_sol_green[]   = "#859900";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_sol_base1, col_sol_base03, col_sol_base03 },
-	[SchemeSel]  = { col_sol_base1, col_sol_violet, col_sol_violet },
+	[SchemeSel]  = { col_sol_base03, col_sol_violet, col_sol_violet },
 };
 
 /* tagging */
