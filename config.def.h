@@ -8,8 +8,8 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = 
 { 
-    "Cascadia Mono:size=12",
-    "AppleColorEmoji:size=12:minspace=False"
+    "Cascadia Code PL:size=11",
+    "AppleColorEmoji:size=11:minspace=False"
 };
 static const char dmenufont[]       = "Cascadia Code PL:size=12";
 static const char col_gray1[]       = "#222222";
@@ -50,9 +50,8 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/* class      instance      title       tags mask     isfloating   monitor */
+	{ "Gimp",     NULL,         NULL,       0,            1,           -1 },
 };
 
 /* layout(s) */
