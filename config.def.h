@@ -11,7 +11,7 @@ static const char *fonts[]          =
     "Cascadia Code PL:size=11",
     "AppleColorEmoji:size=11:minspace=False"
 };
-static const char dmenufont[]       = "Cascadia Code PL:size=12";
+static const char dmenufont[]       = "Cascadia Code PL:size=11";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -137,9 +137,10 @@ static Button buttons[] = {
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 
-    { ClkStatusText,        0,              Button1,        sigstatusbar,   {.i = 25} },
-    { ClkStatusText,        0,              Button2,        sigstatusbar,   {.i = 25} },
-    { ClkStatusText,        0,              Button3,        sigstatusbar,   {.i = 25} },
+    { ClkStatusText,        0,              Button1,        sigstatusbar,   {.i = 1} },
+    { ClkStatusText,        0,              Button2,        sigstatusbar,   {.i = 2} },
+    { ClkStatusText,        0,              Button3,        sigstatusbar,   {.i = 3} },
+    { ClkStatusText,        MODKEY,         Button1,        sigstatusbar,   {.i = 4} },
 
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
