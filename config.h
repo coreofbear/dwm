@@ -39,7 +39,7 @@ static const char col_sol_green[]   = "#859900";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_sol_base1, col_sol_base03, col_sol_base03 },
-	[SchemeSel]  = { col_sol_base03, col_sol_violet, col_sol_violet },
+	[SchemeSel]  = { col_sol_base03, col_sol_red, col_sol_red }
 };
 
 /* tagging */
