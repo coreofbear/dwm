@@ -8,10 +8,10 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = 
 { 
-    "Cascadia Code PL:size=11",
-    "AppleColorEmoji:size=11:minspace=False"
+    "Cascadia Code PL:size=10",
+    "AppleColorEmoji:size=10:minspace=False"
 };
-static const char dmenufont[]       = "Cascadia Code PL:size=11";
+static const char dmenufont[]       = "Cascadia Code PL:size=10";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -19,19 +19,18 @@ static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
 
 /* Solarized Dark colors */
-static const char col_sol_base03[]  = "#002b36";
+static const char col_sol_base03[]  = "#242424";
 static const char col_sol_base02[]  = "#073642";
 static const char col_sol_base01[]  = "#586e75";
 static const char col_sol_base00[]  = "#657b83";
 static const char col_sol_base0[]  = "#839496";
-static const char col_sol_base1[]  = "#93a1a1";
+static const char col_sol_base1[]  = "#ffffff";
 static const char col_sol_base2[]  = "#eee8d5";
 static const char col_sol_base3[]  = "#fdf6e3";
 static const char col_sol_yellow[]  = "#b58900";
 static const char col_sol_orange[]  = "#cb4b16";
-static const char col_sol_red[]     = "#dc322f";
-static const char col_sol_magenta[] = "#d33682";
-static const char col_sol_violet[]  = "#6c71c4";
+static const char col_sol_red[]     = "#26a269";
+static const char col_sol_violet[]  = "#a51d2d";
 static const char col_sol_blue[]    = "#268bd2";
 static const char col_sol_cyan[]    = "#2aa198";
 static const char col_sol_green[]   = "#859900";
@@ -77,21 +76,23 @@ static const Layout layouts[] = {
 #define PrtScrDWM	    0x0000ff61
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }launcher
 
 #define STATUSBAR "dwmblocks"
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_sol_base03, "-nf", col_sol_base1, "-sb", col_sol_violet, "-sf", col_sol_base03, NULL };
-static const char *termcmd[]  = { "alacritty", NULL };
-static const char *cmdprintscreen[]  = { "flameshot", "launcher", NULL };
+static const char *termcmd[]  = { "kitty", NULL };
+static const char *browsercmd[]  = { "chromium", NULL };
+static const char *cmdprintscreen[]  = { "scrot", "-s", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-    { 0,                            PrtScrDWM, spawn,          {.v = cmdprintscreen } },
+    	{ 0,                            PrtScrDWM, spawn,          {.v = cmdprintscreen } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY|ShiftMask,             XK_b, 	   spawn,          {.v = browsercmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -125,7 +126,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY|ShiftMask,             XK_Escape,      quit,           {0} },
 };
 
 /* button definitions */
