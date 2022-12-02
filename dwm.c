@@ -332,12 +332,6 @@ applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact)
 	int baseismin;
 	Monitor *m = c->mon;
 
-    /** Adding gapps */
-    //*x += m->gappx;
-    //*y += m->gappx;
-    //*w -= 2 * m->gappx;
-    //*h -= 2 * m->gappx;
-
 	/* set minimum possible */
 	*w = MAX(1, *w);
 	*h = MAX(1, *h);
@@ -2326,7 +2320,7 @@ centeredmaster(Monitor *m)
 		return;
 
 	/* initialize areas */
-	mw = m->ww - m->gappx;
+	mw = m->ww;
 	mx = 0;
 	my = 0;
 	tw = mw;
