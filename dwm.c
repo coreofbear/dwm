@@ -240,6 +240,8 @@ static int xerror(Display *dpy, XErrorEvent *ee);
 static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
+static void centeredmaster(Monitor *m);
+static void centeredfloatingmaster(Monitor *m);
 
 /* variables */
 static const char autostartblocksh[] = "autostart_blocking.sh";
@@ -330,6 +332,12 @@ applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact)
 	int baseismin;
 	Monitor *m = c->mon;
 
+    /** Adding gapps */
+    //*x += m->gappx;
+    //*y += m->gappx;
+    //*w -= 2 * m->gappx;
+    //*h -= 2 * m->gappx;
+
 	/* set minimum possible */
 	*w = MAX(1, *w);
 	*h = MAX(1, *h);
@@ -387,6 +395,7 @@ applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact)
 		if (c->maxh)
 			*h = MIN(*h, c->maxh);
 	}
+
 	return *x != c->x || *y != c->y || *w != c->w || *h != c->h;
 }
 
@@ -2303,6 +2312,140 @@ zoom(const Arg *arg)
 		if (!c || !(c = nexttiled(c->next)))
 			return;
 	pop(c);
+}
+
+void
+centeredmaster(Monitor *m)
+{
+	unsigned int i, n, h, mw, mx, my, oty, ety, tw;
+	Client *c;
+
+	/* count number of clients in the selected monitor */
+	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+	if (n == 0)
+		return;
+
+	/* initialize areas */
+	mw = m->ww - m->gappx;
+	mx = 0;
+	my = 0;
+	tw = mw;
+
+    /** 
+     *  n           - qty of clients
+     *  m->nmaster  - qty of master windows
+     *  m->mfact    - factor of master area size [0.05..0.95]
+     *
+     *  m->ww       - window width
+     *  m->wh       - window height
+     *  mw          - master width
+     *  tw          - stack width
+     *  mx          - master area X coordinate
+     *  my          - master area Y coordinate
+     *  
+     */
+	if (n > m->nmaster) {
+		/* go mfact box in the center if more than nmaster clients */
+        /** Calculating master client width and stack width */
+		mw = m->nmaster ? (m->ww * m->mfact) : 0;
+		tw = m->ww - mw;
+
+		if (n - m->nmaster > 1) {
+			/* only one client */
+			mx = (m->ww - mw) / 2;
+			tw = (m->ww - mw) / 2;
+		}
+	}
+
+    /**
+     *  oty     - Odd tile Y coordinate
+     *  ety     - Even tile Y coordinate
+     */
+	oty = 0;
+	ety = 0;
+
+    /**
+     *  c       - client
+     *  c->bw   - client's border width
+     */
+    /** Go over all windows and resizing these */
+	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
+        /** Check if client is master */
+        if (i < m->nmaster) {
+            /* nmaster clients are stacked vertically, in the center
+             * of the screen */
+            /** Calculating height:
+             *  It is divided by masters qty
+             */
+            h = (m->wh - my) / (MIN(n, m->nmaster) - i);
+            resize(c, m->wx + mx + m->gappx, m->wy + my + m->gappx, 
+                    mw - (2*c->bw) - (2 * m->gappx), h - (2*c->bw) - (2 * m->gappx), 
+                    0);
+            
+            my += HEIGHT(c);
+        } else {
+            /* stack clients are stacked vertically */
+            /** Check if stack client is even or odd */
+            if ((i - m->nmaster) % 2 ) {
+                h = (m->wh - ety) / ( (1 + n - i) / 2);
+                resize(c, m->wx + m->gappx, m->wy + ety + m->gappx, tw - (2*c->bw) - (2 * m->gappx),
+                       h - (2*c->bw) - (2 * m->gappx), 0);
+                ety += HEIGHT(c) + (2 * m->gappx);
+            } else {
+                h = (m->wh - oty) / ((1 + n - i) / 2);
+                resize(c, m->wx + mx + mw + m->gappx, m->wy + oty + m->gappx,
+                       tw - (2*c->bw) - (2 * m->gappx), h - (2*c->bw) - (2 * m->gappx), 0);
+                oty += HEIGHT(c) + (2 * m->gappx);
+            }
+        }
+}
+
+void
+centeredfloatingmaster(Monitor *m)
+{
+	unsigned int i, n, w, mh, mw, mx, mxo, my, myo, tx;
+	Client *c;
+
+	/* count number of clients in the selected monitor */
+	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+	if (n == 0)
+		return;
+
+	/* initialize nmaster area */
+	if (n > m->nmaster) {
+		/* go mfact box in the center if more than nmaster clients */
+		if (m->ww > m->wh) {
+			mw = m->nmaster ? m->ww * m->mfact : 0;
+			mh = m->nmaster ? m->wh * 0.9 : 0;
+		} else {
+			mh = m->nmaster ? m->wh * m->mfact : 0;
+			mw = m->nmaster ? m->ww * 0.9 : 0;
+		}
+		mx = mxo = (m->ww - mw) / 2;
+		my = myo = (m->wh - mh) / 2;
+	} else {
+		/* go fullscreen if all clients are in the master area */
+		mh = m->wh;
+		mw = m->ww;
+		mx = mxo = 0;
+		my = myo = 0;
+	}
+
+	for(i = tx = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
+	if (i < m->nmaster) {
+		/* nmaster clients are stacked horizontally, in the center
+         * of the screen */
+        w = (mw + mxo - mx) / (MIN(n, m->nmaster) - i);
+		resize(c, m->wx + mx, m->wy + my, w - (2*c->bw),
+		       mh - (2*c->bw), 0);
+		mx += WIDTH(c);
+	} else {
+		/* stack clients are stacked horizontally */
+		w = (m->ww - tx) / (n - i);
+		resize(c, m->wx + tx, m->wy, w - (2*c->bw),
+		       m->wh - (2*c->bw), 0);
+		tx += WIDTH(c);
+	}
 }
 
 int
