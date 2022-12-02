@@ -51,7 +51,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance      title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,         NULL,       0,            1,           -1 },
+	{ "Gimp",     NULL,         NULL,       0,            0,           -1 },
 };
 
 /* layout(s) */
@@ -66,7 +66,7 @@ static const Layout layouts[] = {
 	{ "~float~",      NULL },    /* no layout function means floating behavior */
 	{ "[mono]",      monocle },
 	{ "[wide]",      centeredmaster },
-	{ "[widef]",     centeredfloatingmaster },
+	{ "[fwide]",     centeredfloatingmaster },
 };
 
 /* key definitions */

@@ -1848,18 +1848,18 @@ tile(Monitor *m)
 	if (n > m->nmaster)
 		mw = m->nmaster ? m->ww * m->mfact : 0;
 	else
-		mw = m->ww - m->gappx;
-	for (i = 0, my = ty = m->gappx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
+		mw = m->ww - (2 * m->gappx);
+	for (i = 0, my = ty = (2 * m->gappx), c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 		if (i < m->nmaster) {
-			h = (m->wh - my) / (MIN(n, m->nmaster) - i) - m->gappx;
-			resize(c, m->wx + m->gappx, m->wy + my, mw - (2*c->bw) - m->gappx, h - (2*c->bw), 0);
+			h = (m->wh - my) / (MIN(n, m->nmaster) - i) - (2 * m->gappx);
+			resize(c, m->wx + (2 * m->gappx), m->wy + my, mw - (2*c->bw) - (2 * m->gappx), h - (2*c->bw), 0);
 			if (my + HEIGHT(c) < m->wh)
-				my += HEIGHT(c) + m->gappx;
+				my += HEIGHT(c) + (2 * m->gappx);
 		} else {
-			h = (m->wh - ty) / (n - i) - m->gappx;
-			resize(c, m->wx + mw + m->gappx, m->wy + ty, m->ww - mw - (2*c->bw) - 2*m->gappx, h - (2*c->bw), 0);
+			h = (m->wh - ty) / (n - i) - (2 * m->gappx);
+			resize(c, m->wx + mw + (2 * m->gappx), m->wy + ty, m->ww - mw - (2*c->bw) - 2*(2 * m->gappx), h - (2*c->bw), 0);
 			if (ty + HEIGHT(c) < m->wh)
-				ty += HEIGHT(c) + m->gappx;
+				ty += HEIGHT(c) + (2 * m->gappx);
 		}
 }
 
@@ -2311,7 +2311,6 @@ zoom(const Arg *arg)
 void
 centeredmaster(Monitor *m)
 {
-    return;
 	unsigned int i, n, h, mw, mx, my, oty, ety, tw;
 	Client *c;
 
@@ -2323,7 +2322,7 @@ centeredmaster(Monitor *m)
 	/* initialize areas */
 	mw = m->ww;
 	mx = 0;
-	my = 0;
+	my = m->gappx;
 	tw = mw;
 
     /** 
@@ -2344,20 +2343,51 @@ centeredmaster(Monitor *m)
         /** Calculating master client width and stack width */
 		mw = m->nmaster ? (m->ww * m->mfact) : 0;
 		tw = m->ww - mw;
+        // TODO: remove after debug
+        FILE * ptr_file = NULL;
+        ptr_file = fopen("/home/mikhail/dwm_log.txt", "a");
+        if (NULL == ptr_file)
+        {
+            return;
+        }
+
+        fprintf(ptr_file, "True\n\tmx = %d\n\ttw = %d\n\n", mx, tw);
+        fclose(ptr_file);
 
 		if (n - m->nmaster > 1) {
 			/* only one client */
 			mx = (m->ww - mw) / 2;
 			tw = (m->ww - mw) / 2;
+
+            // TODO: remove after debug
+            FILE * ptr_file = NULL;
+            ptr_file = fopen("/home/mikhail/dwm_log.txt", "a");
+            if (NULL == ptr_file)
+            {
+                return;
+            }
+
+            fprintf(ptr_file, "Only one client!\n\tmx = %d\n\ttw = %d\n\n", mx, tw);
+            fclose(ptr_file);
 		}
 	}
+    // TODO: remove after debug
+    FILE * ptr_file = NULL;
+    ptr_file = fopen("/home/mikhail/dwm_log.txt", "a");
+    if (NULL == ptr_file)
+    {
+        return;
+    }
+
+    fprintf(ptr_file, "False\n\tmx = %d\n\ttw = %d\n\n", mx, tw);
+    fclose(ptr_file);
 
     /**
      *  oty     - Odd tile Y coordinate
      *  ety     - Even tile Y coordinate
      */
-	oty = 0;
-	ety = 0;
+	oty = m->gappx;
+	ety = m->gappx;
 
     /**
      *  c       - client
@@ -2365,6 +2395,7 @@ centeredmaster(Monitor *m)
      */
     /** Go over all windows and resizing these */
 	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
+    {
         /** Check if client is master */
         if (i < m->nmaster) {
             /* nmaster clients are stacked vertically, in the center
@@ -2378,6 +2409,28 @@ centeredmaster(Monitor *m)
                     0);
             
             my += HEIGHT(c);
+            // TODO: remove after debug
+            FILE * ptr_file = NULL;
+            ptr_file = fopen("/home/mikhail/dwm_log.txt", "a");
+            if (NULL == ptr_file)
+            {
+                return;
+            }
+
+            fprintf(ptr_file, "%d\n"
+                    "\tMaster\n"
+                    "\tx = %d\n"
+                    "\ty = %d\n"
+                    "\tw = %d\n"
+                    "\th = %d\n"
+                    "\tmy = %d\n\n", 
+                    i,
+                    m->wx + mx + m->gappx, 
+                    m->wy + my + m->gappx,
+                    mw - (2*c->bw) - (2 * m->gappx), 
+                    h - (2*c->bw) - (2 * m->gappx),
+                    my);
+            fclose(ptr_file);
         } else {
             /* stack clients are stacked vertically */
             /** Check if stack client is even or odd */
@@ -2386,13 +2439,71 @@ centeredmaster(Monitor *m)
                 resize(c, m->wx + m->gappx, m->wy + ety + m->gappx, tw - (2*c->bw) - (2 * m->gappx),
                        h - (2*c->bw) - (2 * m->gappx), 0);
                 ety += HEIGHT(c) + (2 * m->gappx);
+                
+                // TODO: remove after debug
+                FILE * ptr_file = NULL;
+                ptr_file = fopen("/home/mikhail/dwm_log.txt", "a");
+                if (NULL == ptr_file)
+                {
+                    return;
+                }
+
+                fprintf(ptr_file, "%d\n"
+                    "\tEven stack\n"
+                    "\tx = %d\n"
+                    "\ty = %d\n"
+                    "\tw = %d\n"
+                    "\th = %d\n"
+                    "\tety = %d\n\n", 
+                    i,
+                    m->wx + m->gappx, 
+                    m->wy + ety + m->gappx, 
+                    tw - (2*c->bw) - (2 * m->gappx),
+                    h - (2*c->bw) - (2 * m->gappx),                    
+                    ety);
+                fclose(ptr_file);
             } else {
                 h = (m->wh - oty) / ((1 + n - i) / 2);
                 resize(c, m->wx + mx + mw + m->gappx, m->wy + oty + m->gappx,
                        tw - (2*c->bw) - (2 * m->gappx), h - (2*c->bw) - (2 * m->gappx), 0);
                 oty += HEIGHT(c) + (2 * m->gappx);
+
+                // TODO: remove after debug
+                FILE * ptr_file = NULL;
+                ptr_file = fopen("/home/mikhail/dwm_log.txt", "a");
+                if (NULL == ptr_file)
+                {
+                    return;
+                }
+
+                fprintf(ptr_file, "%d\n"
+                    "\tOdd stack\n"
+                    "\tx = %d\n"
+                    "\ty = %d\n"
+                    "\tw = %d\n"
+                    "\th = %d\n"
+                    "\toty = %d\n\n", 
+                    i,
+                    m->wx + mx + mw + m->gappx, 
+                    m->wy + oty + m->gappx,
+                    tw - (2*c->bw) - (2 * m->gappx), 
+                    h - (2*c->bw) - (2 * m->gappx), 
+                    oty);
+                fclose(ptr_file);
             }
         }
+
+        // TODO: remove after debug
+        FILE * ptr_file = NULL;
+        ptr_file = fopen("/home/mikhail/dwm_log.txt", "a");
+        if (NULL == ptr_file)
+        {
+            continue;
+        }
+
+        fprintf(ptr_file, "i = %d; m->wx - %d; m->wy - %d; oty - %d; ety - %d; h - %d\n", i, m->wx, m->wy, oty, ety, h);
+        fclose(ptr_file);
+    }
 }
 
 void
@@ -2462,6 +2573,18 @@ main(int argc, char *argv[])
 #endif /* __OpenBSD__ */
 	scan();
     runautostart();
+
+    //remove after debugging
+    FILE * ptr_file = NULL;
+    ptr_file = fopen("/home/mikhail/dwm_log.txt", "w");
+    if (NULL == ptr_file)
+    {
+        return;
+    }
+
+    fprintf(ptr_file, "");
+    fclose(ptr_file);
+
 	run();
 	cleanup();
 	XCloseDisplay(dpy);
