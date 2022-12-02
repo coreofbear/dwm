@@ -2311,6 +2311,7 @@ zoom(const Arg *arg)
 void
 centeredmaster(Monitor *m)
 {
+    return;
 	unsigned int i, n, h, mw, mx, my, oty, ety, tw;
 	Client *c;
 
