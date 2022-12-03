@@ -38,7 +38,7 @@ static const char col_sol_green[]   = "#859900";
 
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_sol_base1, col_sol_base03, col_sol_base03 },
+	[SchemeNorm] = { col_sol_base1, col_sol_base03, col_green },
 	[SchemeSel]  = { col_sol_base1, col_green, col_sol_base1 }
 };
 
@@ -50,8 +50,9 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance      title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,         NULL,       0,            0,           -1 },
+	/* class    instance    title           tags mask     isfloating   monitor */
+	{ "Gimp",   NULL,       NULL,           0,            0,           -1 },
+	{ NULL,     NULL,       "rss feed",     0,            1,           -1 },
 };
 
 /* layout(s) */
