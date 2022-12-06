@@ -90,6 +90,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *termcmd[]  = { "st", NULL };
 static const char *browsercmd[]  = { "chromium", NULL };
 static const char *telegramcmd[]  = { "telegram-desktop", NULL };
+static const char *newsboatcmd[]  = { "st -e newsboat -ru ~/rss_links.txt", NULL };
 static const char scratchpadname[]  = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "100x30", NULL };
 static const char *cmdprintscreen[]  = { "scrot", "-s", NULL };
@@ -101,6 +102,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_b, 	   spawn,          {.v = browsercmd } },
 	{ MODKEY|ShiftMask,             XK_t, 	   spawn,          {.v = telegramcmd } },
+	{ MODKEY,                       XK_n, 	   spawn,          {.v = newsboatcmd } },
 	{ MODKEY,                       XK_s,      togglescratch,  {.v = scratchpadcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
