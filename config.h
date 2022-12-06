@@ -17,10 +17,10 @@ static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
-static const char col_green[]       = "#1c6849";
+static const char col_green[]       = "#72dec2";
 
 /* Solarized Dark colors */
-static const char col_sol_base03[]  = "#242424";
+static const char col_sol_base03[]  = "#888888";
 static const char col_sol_base02[]  = "#073642";
 static const char col_sol_base01[]  = "#586e75";
 static const char col_sol_base00[]  = "#657b83";
@@ -38,8 +38,8 @@ static const char col_sol_green[]   = "#859900";
 
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_sol_base1, col_sol_base03, col_green },
-	[SchemeSel]  = { col_sol_base1, col_green, col_sol_base1 }
+	[SchemeNorm] = { "#ffffff", col_sol_base03, col_sol_base1 },
+	[SchemeSel]  = { "#000000", col_green, col_green }
 };
 
 /* tagging */
