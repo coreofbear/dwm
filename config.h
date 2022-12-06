@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 4;        /* border pixel of windows */
+static const unsigned int borderpx  = 5;        /* border pixel of windows */
 static const unsigned int gappx     = 16;       /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -17,10 +17,10 @@ static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
-static const char col_green[]       = "#72dec2";
+static const char col_green[]       = "#5bc8af";
 
 /* Solarized Dark colors */
-static const char col_sol_base03[]  = "#888888";
+static const char col_sol_base03[]  = "#ffffff";
 static const char col_sol_base02[]  = "#073642";
 static const char col_sol_base01[]  = "#586e75";
 static const char col_sol_base00[]  = "#657b83";
@@ -38,7 +38,7 @@ static const char col_sol_green[]   = "#859900";
 
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { "#ffffff", col_sol_base03, col_sol_base1 },
+	[SchemeNorm] = { "#000000", col_sol_base03, col_sol_base1 },
 	[SchemeSel]  = { "#000000", col_green, col_green }
 };
 
